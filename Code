@@ -1,0 +1,18 @@
+file = open("F:\\", "r")                                                #Opens file to be read
+
+groceries = ['PUBLIX', 'WHOLEFDS', 'FOOD CITY', 'CASHEW', 'EARTH FARE']
+
+def totalFunction(expense):                                             #Function for totaling expenses
+    total = 0
+    for x in file:                                                      #For each line, x, in the document...
+        y = x.split()                                                   #...create a list, y, from each whole string separated by a space
+        if str(expense) in y:
+            total = total + float(y[len(y) - 2].lstrip('0'))
+        else:
+            continue
+    print(total)
+    
+for store in groceries:                                                 #Current revision returns only the total of the first index in 'groceries'
+    print(totalFunction(store))
+
+file.close()
