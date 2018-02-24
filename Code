@@ -10,9 +10,44 @@ def totalFunction(expense):                                             #Functio
             total = total + float(y[len(y) - 2].lstrip('0'))
         else:
             continue
-    print(total)
-    
-for store in groceries:                                                 #Current revision returns only the total of the first index in 'groceries'
-    print(totalFunction(store))
+    if total > 0:
+        print('Total: ' + str(total))
+    else:
+        print('No purchases were made at ' + reference[str(expense)])
+
+def netProfit(expenses):
+    debitTotal = 0
+    creditTotal = 0
+    currentMonth = []
+    months = {'01': 'January', '02': 'February', '03': 'March', '04': 'April', '05': 'May', '06': 'June', '07': 'July',
+              '08': 'August', '09': 'September', '10': 'October', '11': 'November', '12': 'December'}
+    for x in (y.split() for y in file):
+        if x[0][1] != 'D':
+            continue
+        month = x[1][:2]
+        if str(month) not in currentMonth:
+            if debitTotal > 0:
+                print("Total Debits: " + "%.2f" % debitTotal)
+            if creditTotal > 0:
+                print("Total Credits: " + "%.2f" % creditTotal)
+            totalIncome = creditTotal - debitTotal
+            if totalIncome != 0:
+                print("Total Income: " + str("%.2f" % totalIncome))
+            currentMonth.clear()
+            debitTotal = 0
+            creditTotal = 0
+            currentMonth.append(month)
+            print('Month: ' + months[currentMonth[0]])
+            if x[len(x) - 1] == "DR":
+                debitTotal = debitTotal + float(x[len(x) - 2].lstrip('0'))
+            elif x[len(x) - 1] == "CR":
+                creditTotal = creditTotal + float(x[len(x) - 2].lstrip('0'))
+        elif str(month) in currentMonth:
+            if x[len(x) - 1] == "DR":
+                debitTotal = debitTotal + float(x[len(x) - 2].lstrip('0'))
+            elif x[len(x) - 1] == "CR":
+                creditTotal = creditTotal + float(x[len(x) - 2].lstrip('0'))
+
+print(netProfit())
 
 file.close()
